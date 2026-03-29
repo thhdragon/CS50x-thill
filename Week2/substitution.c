@@ -37,11 +37,13 @@ char encrypt_char(char letter) {
 }
 
 bool isalpha_string(char *key) {
-  if (*key == '0') {
+  if (*key == '\0') {
     return false;
   }
-  while (*key != '0') {
+
+  while (*key != '\0') {
     if (!isalpha(*key)) {
+      puts(" not alpha for some reason");
       return false;
     }
     key++;
