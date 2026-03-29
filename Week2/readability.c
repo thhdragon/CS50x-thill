@@ -2,40 +2,27 @@
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
-#include <string.h>
 
-// Program to compute the Coleman-Liau readability index for a given text.
-//
-// This program prompts the user for a block of text, counts the letters,
-// words, and sentences, and then calculates the Coleman-Liau index to estimate
-// the U.S. grade level required to understand the text.
-//
-// Coleman-Liau index:
-//     index = 0.0588 * L - 0.296 * S - 15.8
-// where:
-//     L = average number of letters per 100 words
-//     S = average number of sentences per 100 words
-//
-// Output rules:
-//   - Round the computed index to the nearest integer.
-//   - If the index is 16 or higher, print "Grade 16+."
-//   - If the index is less than 1, print "Before Grade 1."
-//   - Otherwise, print "Grade X" where X is the rounded index.
-
+// count letters, words, sentences in a string
 void count_string(char *string, int *letters, int *words, int *sentences) {
+  // in_word is used to track whether we are currently in a word or not
   int in_word = 0;
+  // loop through each character in the string
   for (char *letter = string; *letter != '\0'; letter++) {
-    // Count letters, words, and sentences:
-    // letters: alphabetic characters (A-Z and a-z)
+    // if the character is a letter, increment the letter count and set in_word
+    // to true
     if (isalpha(*letter)) {
+      // increment the letter count and set in_word to true
       (*letters)++;
       in_word = 1;
     } else if (*letter == '.' || *letter == '!' || *letter == '?') {
-      // - sentences: occurrences of '.', '!', or '?'
+      // if the character is a sentence-ending punctuation mark, increment
+      // sentence count and set in_word to true
       (*sentences)++;
       in_word = 1;
     } else if (isspace(*letter)) {
-      // words: char(s) separated by spaces
+      // if the character is a space, check if we are currently in a word. If we
+      // are, increment the word count and set in_word to false
       if (!in_word) {
         in_word = 1;
       } else {
@@ -44,29 +31,46 @@ void count_string(char *string, int *letters, int *words, int *sentences) {
       }
     }
   }
-
+  // if we end the string while still in a word, we need to increment the word
+  // count one last time
   if (in_word) {
     (*words)++;
   }
 }
 
+// calculate the Coleman-Liau index
+int coleman_liau(int wc, float lc, float sc) {
+  // calculate the average number of letters and sentences per 100 words
+  float l_per_100 = (lc / wc) * 100;
+  float s_per_100 = (sc / wc) * 100;
+  // calculate the Coleman-Liau index using the formula
+  float index = 0.0588 * l_per_100 - 0.296 * s_per_100 - 15.8;
+
+  // round the index to the nearest whole number and return it
+  return roundf(index);
+}
+
+// main function
 int main(void) {
-  // Prompt the user for input text.
-  // hardcode grade 1 for now
-  char *grade1 = "One fish. Two fish. Red fish. Blue fish.";
+  // prompt the user for a string and initialize letter, word, and sentence
+  // counts
+  char *prompt = get_string("Text: ");
   int letters = 0;
   int words = 0;
   int sentences = 0;
 
-  count_string(grade1, &letters, &words, &sentences);
+  // count the letters, words, and sentences in the prompt
+  count_string(prompt, &letters, &words, &sentences);
 
-  // DEBUGGING
-  printf("%d\n", letters);
-  printf("%d\n", sentences);
-  printf("%d\n", words);
+  // calculate the Coleman-Liau index and print the appropriate grade level
+  int index = coleman_liau(words, letters, sentences);
 
-  // Compute the Coleman-Liau index using L and S per 100 words,
-  // then round the result to the nearest integer.
-
-  // Print the grade level according to the rules above.
+  // print the appropriate grade level based on the index
+  if (index < 1) {
+    puts("Before Grade 1.");
+  } else if (index > 16) {
+    puts("Grade 16+.");
+  } else {
+    printf("Grade %d\n", index);
+  }
 }
