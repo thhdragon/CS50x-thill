@@ -35,13 +35,23 @@ bool isalpha_string(char *key) {
   if (*key == '\0') {
     return false;
   }
-
+  // create an array of boolean flags to store seen in
+  bool seen[26] = {false};
   // loop through the key
   while (*key != '\0') {
     // check if the character is alphabetic
     if (!isalpha(*key)) {
       return false;
     }
+    // take as upper and then subtract 'A' to get index.
+    int idx = toupper(*key) - 'A';
+
+    // before marking check if is marked already and return error if duplicate
+    if (seen[idx]) {
+      return false;
+    }
+    // mark the index as seen
+    seen[idx] = true;
     // move to the next character
     key++;
   }
@@ -56,7 +66,7 @@ bool validate_key(char *key) {
     return false;
   }
   // Check if every character in the key is alphabetic
-  if (!isalpha_string(key)) {
+  else if (!isalpha_string(key)) {
     return false;
   }
   // if it passes all checks
@@ -70,8 +80,6 @@ int main(int argc, string argv[]) {
     puts("Usage: ./substitution key");
     return 1;
   }
-  // get the plaintext from the user
-  char *plain = get_string("Plaintext: ");
   // get the key from the command-line argument
   char *key = argv[1];
   // validate the key
@@ -80,6 +88,10 @@ int main(int argc, string argv[]) {
     puts("Key must contain 26 characters.");
     return 1;
   }
+
+  // get the plaintext from the user
+  char *plain = get_string("Plaintext: ");
+
   // print the ciphertext
   printf("ciphertext: ");
   // loop through the plaintext
