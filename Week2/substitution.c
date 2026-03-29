@@ -4,58 +4,54 @@
 #include <stdio.h>
 #include <string.h>
 
-// Hardcode KEY for now
-char *KEY = "NQXPOMAFTRHLZGECYJIUWSKDVB";
-// Also hardcode Plaintext
-char *TEXT_PLAIN = "Hello";
-
-char encrypt_char(char letter) {
+// encrypt a single character
+char encrypt_char(char letter, char *key) {
+  // check if the letter is uppercase
   if (isupper(letter)) {
-    //   a. If the character is uppercase:
-    //      - Determine its alphabetical index (0-25)
     // subtract 'A'
+    // get the index of the letter
     int alpha_idx = letter - 'A';
-    //      - Substitute it with the corresponding character from the key,
-    //      preserving uppercase
-    char sub = KEY[alpha_idx];
+    // get the substitute character
+    char sub = key[alpha_idx];
+    // return the substitute character
     return toupper(sub);
   } else if (islower(letter)) {
-    //   b. If the character is lowercase:
-    //      - Determine its alphabetical index (0-25)
-    //      - Substitute it with the corresponding character from the key,
-    //      preserving lowercase
     // subtract 'a'
+    // get the index of the letter
     int alpha_idx = letter - 'a';
-
-    char sub = KEY[alpha_idx];
+    // get the substitute character
+    char sub = key[alpha_idx];
+    // return the substitute character
     return tolower(sub);
   } else {
-    //   c. If the character is non-alphabetic:
-    //      - Output it unchanged
+    // return the character unchanged
     return letter;
   }
 }
 
+// check if the key is alphabetic
 bool isalpha_string(char *key) {
+  // check if the key is empty
   if (*key == '\0') {
     return false;
   }
 
+  // loop through the key
   while (*key != '\0') {
+    // check if the character is alphabetic
     if (!isalpha(*key)) {
-      puts(" not alpha for some reason");
       return false;
     }
+    // move to the next character
     key++;
   }
+  // if it passes all checks
   return true;
 }
 
+// validate the key
 bool validate_key(char *key) {
-  // Validate the Substitution Key
-
-  // Check if the key contains each letter exactly once (no duplicates)
-  // Check if the key has exactly 26 characters
+  // check if the key has 26 characters
   if (strlen(key) != 26) {
     return false;
   }
@@ -67,29 +63,32 @@ bool validate_key(char *key) {
   return true;
 }
 
+// main function
 int main(int argc, string argv[]) {
-  // Validate Command - Line Arguments
-  // Check if the program was executed with exactly one argument
-  // else print an error message and return 1
+  // check if the program was executed with exactly one command-line argument
   if (argc != 2) {
     puts("Usage: ./substitution key");
     return 1;
   }
-
+  // get the plaintext from the user
+  char *plain = get_string("Plaintext: ");
+  // get the key from the command-line argument
   char *key = argv[1];
+  // validate the key
   if (!validate_key(key)) {
     // If any validation fails, print an error message and return 1
     puts("Key must contain 26 characters.");
     return 1;
   }
-  // 5. Encrypt and Output Ciphertext
-  // Iterate through each character of the plaintext:
+  // print the ciphertext
   printf("ciphertext: ");
-  for (char *idx = TEXT_PLAIN; *idx != '\0'; idx++) {
-    char letter = encrypt_char(*idx);
+  // loop through the plaintext
+  for (char *idx = plain; *idx != '\0'; idx++) {
+    // encrypt the character
+    char letter = encrypt_char(*idx, key);
+    // print the encrypted character
     putchar(letter);
   }
-  // 6. Finalize Output
-  // Print a newline character
+  // print a newline
   putchar('\n');
 }
