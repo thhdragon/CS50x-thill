@@ -58,7 +58,10 @@ bool validate_key(char *key) {
     return false;
   }
   // Check if every character in the key is alphabetic
-
+  if (!isalpha_string(key)) {
+    return false;
+  }
+  // if it passes all checks
   return true;
 }
 
