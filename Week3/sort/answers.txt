@@ -1,0 +1,21 @@
+sort1 uses: revised bubble sort
+
+How do you know?: I know sort1 uses bubble sort because the program sorted the pre sorted text file
+much faster than the other txt files. revised bubble sort is the only one that has an improved best
+case time complexity if the list is already or mostly sorted. Revised bubble sort's best case time
+complexity is O(n) while merge and selection sort have a consistent best and worst case time complexity.
+
+sort2 uses: merge sort
+
+How do you know?: I know sort2 uses merge sort because after eliminating bubble sort from the
+possibilities it was easy to pick the faster one. Merge sort is simply a faster algorithm than
+selection sort so all I had to do was compare the run times between the two programs. 
+
+sort3 uses: selection sort
+
+How do you know?: I know sort2 uses selection sort because while comparing sort2 and sort3 I also
+ran them both against the 5000 and 10000 entry txt files. The tracked runtime between the 5000 and
+10000 txt files grew by a much larger number for sort3 than it did for sort2. This tells me that
+sort3 is increasing at a worse time complexity rate than sort2 and selection sort being O(n2)
+meaning its time complexity grows quadratically (aka squared) than merge sort at O(log n log) which
+has an almost linear growth factor.
