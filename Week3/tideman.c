@@ -106,28 +106,37 @@ bool vote(int rank, string name, int ranks[]) {
 }
 
 // Update preferences given one voter's ranks
-// The function is called once for each voter, takes argument ranks[]
-//     - (recall that ranks[i] is the voter’s ith preference,
-//     - where ranks[0] is the first preference).
-// The function should update the global preferences array
-//     - add the current voter’s preferences.
-//          - Recall that preferences[i][j] should represent
-//          - the number of voters who prefer candidate i over candidate j.
-//          - You may assume that every voter will rank each of the candidates.
+// if theres 3 candidates. i need the vote at index 0 which actually represents
+// an index at what i think is called an adjacent array with the candidate names
+// in it. and then i need to compare the vote at index 0 to the vote at index 1
+// and again 0 to index 2. then i need to get index 1 and check against index 2
+// basically like peeking
 void record_preferences(int ranks[]) {
   // once for each voter means ranks[idx] will give 0-2
-  int candidate = 0;
   for (int idx = 0; idx < candidate_count; idx++) {
-    candidate = ranks[idx];
-    puts(candidates[candidate]);
+    for (int jdx = idx + 1; jdx < candidate_count; jdx++) {
+      int winner = ranks[idx];
+      int loser = ranks[jdx];
+      preferences[winner][loser]++;
+    }
   }
-  // TODO
   return;
 }
 
 // Record pairs of candidates where one is preferred over the other
+//      A B C
+//      _ _ _
+// A || 0 2 2
+// B || 1 0 2
+// C || 1 1 0
 void add_pairs(void) {
-  // TODO
+  for (int idx = 0; idx < candidate_count; idx++) {
+    for (int jdx = 0; jdx < candidate_count; jdx++) {
+      int something = preferences[idx][jdx];
+
+      printf("%d  \n", something);
+    }
+  }
   return;
 }
 
