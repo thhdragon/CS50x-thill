@@ -129,12 +129,23 @@ void record_preferences(int ranks[]) {
 // A || 0 2 2
 // B || 1 0 2
 // C || 1 1 0
+// remember the number is an index for a candidate pointer
+// the numbers in the table ARE CANDIDATES.
 void add_pairs(void) {
-  for (int idx = 0; idx < candidate_count; idx++) {
-    for (int jdx = 0; jdx < candidate_count; jdx++) {
-      int something = preferences[idx][jdx];
+  for (int row = 0; row < candidate_count; row++) {
+    for (int col = row + 1; col < candidate_count; col++) {
+      int something = preferences[row][col];
+      int something_else = preferences[col][row];
 
-      printf("%d  \n", something);
+      // dont over-complicate this. a tie is simply [idx][jdx] vs [jdx][idx]
+      if (something > something_else) {
+        // use dot operator to access struct fields post init
+        pairs[pair_count].winner = something;
+        pairs[pair_count].loser = something_else;
+        // increment pair count
+        pair_count++;
+      }
+      printf("%d vs %d  \n", something, something_else);
     }
   }
   return;
