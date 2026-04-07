@@ -15,6 +15,16 @@ typedef struct {
 void sort_pairs(pair pairs[], int n) {
   // TODO: adapt your sort from 4A — compare pairs[i].margin and pairs[j].margin,
   // swap whole pair structs (use a temporary pair variable)
+  for (int idx = 0; idx < n; idx++) {
+    for (int jdx = idx + 1; jdx < n; jdx++) {
+      int swap = pairs[idx].margin;
+      if (pairs[idx].margin < pairs[jdx].margin) {
+        pair swap = pairs[idx];  // hold idx
+        pairs[idx] = pairs[jdx]; // current = next
+        pairs[jdx] = swap;       // next = current
+      }
+    }
+  }
 }
 
 int main(void) {
