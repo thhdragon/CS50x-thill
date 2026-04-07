@@ -107,10 +107,10 @@ bool vote(int rank, string name, int ranks[]) {
 
 // Update preferences given one voter's ranks
 // if theres 3 candidates. i need the vote at index 0 which actually represents
-// an index at what i think is called an adjacent array with the candidate names
-// in it. and then i need to compare the vote at index 0 to the vote at index 1
-// and again 0 to index 2. then i need to get index 1 and check against index 2
-// basically like peeking
+// an index at what i think is called an adjacent array with the candidate
+// names in it. and then i need to compare the vote at index 0 to the vote at
+// index 1 and again 0 to index 2. then i need to get index 1 and check against
+// index 2 basically like peeking
 void record_preferences(int ranks[]) {
   // once for each voter means ranks[idx] will give 0-2
   for (int idx = 0; idx < candidate_count; idx++) {
@@ -134,18 +134,23 @@ void record_preferences(int ranks[]) {
 void add_pairs(void) {
   for (int row = 0; row < candidate_count; row++) {
     for (int col = row + 1; col < candidate_count; col++) {
-      int something = preferences[row][col];
-      int something_else = preferences[col][row];
+      int a = preferences[row][col];
+      int b = preferences[col][row];
 
-      // dont over-complicate this. a tie is simply [idx][jdx] vs [jdx][idx]
-      if (something > something_else) {
+      // dont over-complicate this.
+      // a tie is simply [idx][jdx] vs [jdx][idx]
+      if (a == b) {
+        continue;
+      } else if (a > b) {
         // use dot operator to access struct fields post init
-        pairs[pair_count].winner = something;
-        pairs[pair_count].loser = something_else;
-        // increment pair count
-        pair_count++;
+        pairs[pair_count].winner = a;
+        pairs[pair_count].loser = b;
+      } else if (b > a) {
+        pairs[pair_count].winner = b;
+        pairs[pair_count].loser = a;
       }
-      printf("%d vs %d  \n", something, something_else);
+      // increment pair count
+      pair_count++;
     }
   }
   return;
@@ -154,6 +159,11 @@ void add_pairs(void) {
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void) {
   // TODO
+  for (int idx = 0; idx < pair_count; idx++) {
+    for (int jdx = idx + 1; jdx < pair_count; jdx++) {
+      int current = 
+    }
+  }
   return;
 }
 
