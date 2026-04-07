@@ -151,6 +151,7 @@ void add_pairs(void) {
       }
       // increment pair count
       pair_count++;
+      printf("pair added: %d\n", pair_count);
     }
   }
   return;
@@ -158,11 +159,17 @@ void add_pairs(void) {
 
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void) {
-  // TODO
   for (int idx = 0; idx < pair_count; idx++) {
     for (int jdx = idx + 1; jdx < pair_count; jdx++) {
-      int current = pairs[idx].winner;
-      int next = pairs[jdx].winner;
+      int current_winner = pairs[idx].winner;
+      printf("current winner\t%d\n", current_winner);
+      int next_winner = pairs[jdx].winner;
+      printf("next winner\t%d\n", next_winner);
+      if (current_winner < next_winner) {
+        pair swap = pairs[idx];
+        pairs[idx] = pairs[jdx];
+        pairs[jdx] = swap;
+      }
     }
   }
   return;
@@ -171,11 +178,23 @@ void sort_pairs(void) {
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void) {
   // TODO
+  for (int idx = 0; idx < pair_count; idx++) {
+    int from = pairs[idx].winner;
+    int to = pairs[idx].loser;
+    locked[from][to] = true;
+  }
   return;
 }
 
 // Print the winner of the election
 void print_winner(void) {
   // TODO
+  for (int i = 0; i < pair_count; i++) {
+    for (int j = 0; j < pair_count; j++) {
+      if (locked[i][j]) {
+        printf("%d -> %d\n", i, j);
+      }
+    }
+  }
   return;
 }
