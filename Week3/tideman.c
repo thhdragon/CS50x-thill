@@ -161,7 +161,8 @@ void sort_pairs(void) {
   // TODO
   for (int idx = 0; idx < pair_count; idx++) {
     for (int jdx = idx + 1; jdx < pair_count; jdx++) {
-      int current = 
+      int current = pairs[idx].winner;
+      int next = pairs[jdx].winner;
     }
   }
   return;
