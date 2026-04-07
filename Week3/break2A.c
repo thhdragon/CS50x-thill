@@ -1,52 +1,45 @@
-// Concept 2 — 2-D Arrays and Nested Loops
-// The skill: record_preferences() and add_pairs() both read/write
-// preferences[i][j].
-//
 // Exercise 2A — Build a Preference Table
-// Given a ranks[] array for one voter, update preferences[i][j] (count of
-// voters who prefer i over j).
-// Rule: if candidate A appears before candidate B in ranks, then
-// preferences[A][B]++.
 
-// Exercise 2B — Print a 2-D Array as a Table
-// Practice reading a 2-D array by writing a function that
-// pretty-prints preferences with row/column labels.
-//        Alice  Bob  Charlie
-// Alice    0     3      2
-// Bob      1     0      4
-// Charlie  3     1      0
+// Given a `ranks[]` array for one voter, update `preferences[i][j]` (count of
+// voters who prefer candidate `i` over candidate `j`).
+
+// Rule: if candidate A appears **before** candidate B in `ranks[]`, then
+// `preferences[A][B]++`.
+
+// Note: `ranks[i]` is a candidate *index*, not a position. To say "A is ranked
+// before B", you need to find A's position and B's position in the `ranks[]`
+// array, or equivalently loop over all rank positions `i < j` and increment
+// `preferences[ranks[i]][ranks[j]]`.
 
 #include <stdio.h>
 
 #define N 3
 int preferences[N][N]; // global, zero-initialized
 
-void pretty_print() {
-  
-}
-
 void record_preferences(int ranks[], int n) {
-  // TODO: for every pair (i, j) where ranks puts i before j,
-  //       increment preferences[ranks[i]][ranks[j]]
-  for (int idx = 0; idx < n; idx++) {
-    for (int jdx = idx + 1; jdx < n; jdx++) {
-      int winner = ranks[idx];
-      int loser = ranks[jdx];
+  // use two nested loops over rank positions i and j (where i < j).
+  // For each such pair, ranks[i] is preferred over ranks[j], so:
+  for (int row = 0; row < n; row++) {
+    for (int col = row + 1; col < n; col++) {
+      //     preferences[ranks[i]][ranks[j]]++
+      int winner = ranks[row];
+      int loser = ranks[col];
       preferences[winner][loser]++;
     }
   }
 }
 
 int main(void) {
-  // One voter: ranks = {2, 0, 1}  (Charlie > Alice > Bob)
+  // One voter: ranks = {2, 0, 1}  means 1st choice=Charlie, 2nd=Alice, 3rd=Bob
   int ranks[] = {2, 0, 1};
   record_preferences(ranks, 3);
 
-  // Expected preferences:
-  // [2][0]++ → Charlie preferred over Alice
-  // [2][1]++ → Charlie preferred over Bob
-  // [0][1]++ → Alice preferred over Bob
+  // Expected increments:
+  //   i=0,j=1 → preferences[2][0]++  (Charlie preferred over Alice)
+  //   i=0,j=2 → preferences[2][1]++  (Charlie preferred over Bob)
+  //   i=1,j=2 → preferences[0][1]++  (Alice preferred over Bob)
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++)
       printf("preferences[%d][%d] = %d\n", i, j, preferences[i][j]);
+  // All other entries should remain 0.
 }
