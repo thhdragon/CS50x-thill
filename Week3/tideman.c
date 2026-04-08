@@ -139,7 +139,7 @@ void add_pairs(void) {
       int score_b = preferences[candidate_b][candidate_a];
 
       // dont over-complicate this.
-      // a tie is simply [idx][jdx] == [jdx][idx]
+      // a tie is simply preferences[idx][jdx] == preferences[jdx][idx]
       if (score_a == score_b) {
         continue;
       } else if (score_a > score_b) {
@@ -152,7 +152,6 @@ void add_pairs(void) {
       }
       // increment pair count
       pair_count++;
-      printf("pair added: %d\n", pair_count);
     }
   }
   return;
@@ -191,8 +190,8 @@ void lock_pairs(void) {
 // Print the winner of the election
 void print_winner(void) {
   // TODO
-  for (int i = 0; i < pair_count; i++) {
-    for (int j = 0; j < pair_count; j++) {
+  for (int i = 0; i < candidate_count; i++) {
+    for (int j = 0; j < candidate_count; j++) {
       if (locked[i][j]) {
         printf("%d -> %d\n", i, j);
       }
