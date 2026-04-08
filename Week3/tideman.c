@@ -131,23 +131,24 @@ void record_preferences(int ranks[]) {
 // C || 1 1 0
 // remember the number is an index for a candidate pointer
 // the numbers in the table ARE CANDIDATES.
+
 void add_pairs(void) {
-  for (int row = 0; row < candidate_count; row++) {
-    for (int col = row + 1; col < candidate_count; col++) {
-      int a = preferences[row][col];
-      int b = preferences[col][row];
+  for (int candidate_a = 0; candidate_a < candidate_count; candidate_a++) {
+    for (int candidate_b = candidate_a + 1; candidate_b < candidate_count; candidate_b++) {
+      int score_a = preferences[candidate_a][candidate_b];
+      int score_b = preferences[candidate_b][candidate_a];
 
       // dont over-complicate this.
-      // a tie is simply [idx][jdx] vs [jdx][idx]
-      if (a == b) {
+      // a tie is simply [idx][jdx] == [jdx][idx]
+      if (score_a == score_b) {
         continue;
-      } else if (a > b) {
+      } else if (score_a > score_b) {
         // use dot operator to access struct fields post init
-        pairs[pair_count].winner = a;
-        pairs[pair_count].loser = b;
-      } else if (b > a) {
-        pairs[pair_count].winner = b;
-        pairs[pair_count].loser = a;
+        pairs[pair_count].winner = candidate_a;
+        pairs[pair_count].loser = candidate_b;
+      } else if (score_b > score_a) {
+        pairs[pair_count].winner = candidate_b;
+        pairs[pair_count].loser = candidate_a;
       }
       // increment pair count
       pair_count++;
@@ -161,11 +162,12 @@ void add_pairs(void) {
 void sort_pairs(void) {
   for (int idx = 0; idx < pair_count; idx++) {
     for (int jdx = idx + 1; jdx < pair_count; jdx++) {
-      int current_winner = pairs[idx].winner;
-      printf("current winner\t%d\n", current_winner);
-      int next_winner = pairs[jdx].winner;
-      printf("next winner\t%d\n", next_winner);
-      if (current_winner < next_winner) {
+      pair current = pairs[idx];
+      pair next = pairs[jdx];
+
+      int strength_current = preferences[current.winner][current.loser];
+      int strength_next = preferences[next.winner][next.loser];
+      if (strength_current < strength_next) {
         pair swap = pairs[idx];
         pairs[idx] = pairs[jdx];
         pairs[jdx] = swap;
