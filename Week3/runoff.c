@@ -110,9 +110,9 @@ int main(int argc, string argv[]) {
 }
 
 // Record preference if vote is valid
-//  The array preferences[i] will represent all of the preferences for voter number i. The integer,
-//  preferences[i][j], will store the index of the candidate, from the candidates array, who is the
-//  jth preference for voter i.
+//  The array preferences[i] will represent all of the preferences for voter
+//  number i. The integer, preferences[i][j], will store the index of the
+//  candidate, from the candidates array, who is the jth preference for voter i.
 bool vote(int voter, int rank, string name) {
   // iterate through as many times as there are candidates
   for (int idx = 0; idx < candidate_count; idx++) {
@@ -127,17 +127,21 @@ bool vote(int voter, int rank, string name) {
 }
 
 // Tabulate votes for non-eliminated candidates
-// The function should update the number of votes each candidate has at this stage in the runoff.
+// The function should update the number of votes each candidate has at this
+// stage in the runoff.
 //
-// Recall that at each stage in the runoff, every voter effectively votes for their top-preferred
-// candidate who has not already been eliminated.
+// Recall that at each stage in the runoff, every voter effectively votes for
+// their top-preferred candidate who has not already been eliminated.
 void tabulate(void) {
-  // first step is get votes and candidates
+  // first step is get the choices for each voter
   for (int voter = 0; voter < voter_count; voter++) {
     for (int choice = 0; choice < candidate_count; choice++) {
       int candidate_idx = preferences[voter][choice];
+      // if candidate is not eliminated
       if (!candidates[candidate_idx].eliminated) {
+        // increment vote
         candidates[candidate_idx].votes++;
+        // break because we only want the top vote
         break;
       }
     }
@@ -146,17 +150,20 @@ void tabulate(void) {
 }
 
 // Print the winner of the election, if there is one
-// If any candidate has more than half of the vote, their name should be printed and the function
-// should return true.
-// If nobody has won the election yet, the function should return false.
+// If any candidate has more than half of the vote, their name should be printed
+// and the function should return true. If nobody has won the election yet, the
+// function should return false.
 
-// Recall that voter_count stores the number of voters in the election. Given that, how would you
-// express the number of votes needed to win the election?
+// Recall that voter_count stores the number of voters in the election. Given
+// that, how would you express the number of votes needed to win the election?
 bool print_winner(void) {
+  // loop as many times as candidate choices
   for (int choice = 0; choice < candidate_count; choice++) {
     int votes = candidates[choice].votes;
     int half = (voter_count / 2);
+    // if votes greater than half
     if (votes > half) {
+      // print winners name and return true
       char *winner = candidates[choice].name;
       puts(winner);
       return true;
@@ -167,21 +174,18 @@ bool print_winner(void) {
 
 // Return the minimum number of votes any remaining candidate has
 int find_min(void) {
-  int candidate_idx = 0;
   // give this an initial value of the max amount of votes
   int min_votes = voter_count;
-
-  for (int voter = 0; voter < voter_count; voter++) {
-    for (int choice = 0; choice < candidate_count; choice++) {
-      candidate_idx = preferences[voter][choice];
-      bool eliminated = candidates[candidate_idx].eliminated;
-      if (eliminated) {
-        continue;
-      }
-      int votes = candidates[candidate_idx].votes;
-      if (votes < min_votes) {
-        min_votes = votes;
-      }
+  for (int choice = 0; choice < candidate_count; choice++) {
+    // check if candidate is eliminated
+    if (candidates[choice].eliminated) {
+      continue;
+    }
+    int votes = candidates[choice].votes;
+    // if the current candidates vote count is less than the previous seen
+    // update the new minimum
+    if (votes < min_votes) {
+      min_votes = votes;
     }
   }
 
@@ -190,18 +194,19 @@ int find_min(void) {
 
 // Return true if the election is tied between all candidates, false otherwise
 //
-// The function takes an argument min, which will be the minimum number of votes that anyone in the
-// election currently has.
+// The function takes an argument min, which will be the minimum number of votes
+// that anyone in the election currently has.
 //
-// The function should return true if every candidate remaining in the election has the same number
-// of votes, and should return false otherwise.
+// The function should return true if every candidate remaining in the election
+// has the same number of votes, and should return false otherwise.
 bool is_tie(int min) {
   for (int choice = 0; choice < candidate_count; choice++) {
     int votes = candidates[choice].votes;
-    bool eliminated = candidates[choice].eliminated;
-    if (eliminated) {
+    // check if candidate is eliminated
+    if (candidates[choice].eliminated) {
       continue;
     }
+    // easy check. a tie means all votes == min
     if (votes != min) {
       return false;
     }
@@ -211,6 +216,17 @@ bool is_tie(int min) {
 
 // Eliminate the candidate (or candidates) in last place
 void eliminate(int min) {
-  // TODO
+  for (int choice = 0; choice < candidate_count; choice++) {
+    int votes = candidates[choice].votes;
+    // check if candidate is eliminated
+    if (candidates[choice].eliminated) {
+      continue;
+    }
+    // if candidates votes are == to min they get eliminated
+    // change their eliminated bool to true
+    if (votes == min) {
+      candidates[choice].eliminated = true;
+    }
+  }
   return;
 }
