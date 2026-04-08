@@ -167,11 +167,9 @@ bool print_winner(void) {
 
 // Return the minimum number of votes any remaining candidate has
 int find_min(void) {
-  // TODO
   int candidate_idx = 0;
   // give this an initial value of the max amount of votes
   int min_votes = voter_count;
-  printf("%d\n", min_votes);
 
   for (int voter = 0; voter < voter_count; voter++) {
     for (int choice = 0; choice < candidate_count; choice++) {
@@ -187,7 +185,6 @@ int find_min(void) {
     }
   }
 
-  printf("%d\n", min_votes);
   return min_votes;
 }
 
@@ -199,8 +196,17 @@ int find_min(void) {
 // The function should return true if every candidate remaining in the election has the same number
 // of votes, and should return false otherwise.
 bool is_tie(int min) {
-  // TODO
-  return false;
+  for (int choice = 0; choice < candidate_count; choice++) {
+    int votes = candidates[choice].votes;
+    bool eliminated = candidates[choice].eliminated;
+    if (eliminated) {
+      continue;
+    }
+    if (votes != min) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Eliminate the candidate (or candidates) in last place
