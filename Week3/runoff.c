@@ -145,7 +145,7 @@ void tabulate(void) {
   return;
 }
 
-// Print the winner of the election, if there is one  
+// Print the winner of the election, if there is one
 // If any candidate has more than half of the vote, their name should be printed and the function
 // should return true.
 // If nobody has won the election yet, the function should return false.
@@ -153,17 +153,51 @@ void tabulate(void) {
 // Recall that voter_count stores the number of voters in the election. Given that, how would you
 // express the number of votes needed to win the election?
 bool print_winner(void) {
-  // TODO
+  for (int choice = 0; choice < candidate_count; choice++) {
+    int votes = candidates[choice].votes;
+    int half = (voter_count / 2);
+    if (votes > half) {
+      char *winner = candidates[choice].name;
+      puts(winner);
+      return true;
+    }
+  }
   return false;
 }
 
 // Return the minimum number of votes any remaining candidate has
 int find_min(void) {
   // TODO
-  return 0;
+  int candidate_idx = 0;
+  // give this an initial value of the max amount of votes
+  int min_votes = voter_count;
+  printf("%d\n", min_votes);
+
+  for (int voter = 0; voter < voter_count; voter++) {
+    for (int choice = 0; choice < candidate_count; choice++) {
+      candidate_idx = preferences[voter][choice];
+      bool eliminated = candidates[candidate_idx].eliminated;
+      if (eliminated) {
+        continue;
+      }
+      int votes = candidates[candidate_idx].votes;
+      if (votes < min_votes) {
+        min_votes = votes;
+      }
+    }
+  }
+
+  printf("%d\n", min_votes);
+  return min_votes;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
+//
+// The function takes an argument min, which will be the minimum number of votes that anyone in the
+// election currently has.
+//
+// The function should return true if every candidate remaining in the election has the same number
+// of votes, and should return false otherwise.
 bool is_tie(int min) {
   // TODO
   return false;
