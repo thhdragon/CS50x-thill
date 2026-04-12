@@ -43,30 +43,45 @@ void reflect(int height, int width, RGBTRIPLE image[height][width]) {
 // (2,0),(2,1),(2,2),(2,3),(2,4),
 // (3,0),(3,1),(3,2),(3,3),(3,4),
 // (4,0),(4,1),(4,2),(4,3),(4,4),
+//
+// get average of rgb within one row and one column
+// update the 1 single PIXEL with this average
 void blur(int height, int width, RGBTRIPLE image[height][width]) {
-  // get average of rgb within one row and one column
-  // update the 1 single PIXEL with this average
+  // iterate through the 2D pixel grid
   for (int h = 0; h < height; h++) {
     for (int w = 0; w < width; w++) {
       float average = 0.0;
       RGBTRIPLE current = PIXEL;
-      int count = 0;
-      int red = 0;
-      int blue = 0;
-      int green = 0;
+      int total_nearby_pixels = 0;
+      int total_red = 0;
+      int total_blue = 0;
+      int total_green = 0;
 
       // for each pixel do another 2D iterative loop starting from w,h-1 to w,h+1
-      for (int inner_h = h - 1; inner_h < h + 1; inner_h++) {
-        for (int inner_w = w - 1; inner_w < w + 1; inner_w++) {
+      // get pixels within 1 row and 1 column
+      for (int inner_h = h - 1; inner_h <= h + 1; inner_h++) {
+        for (int inner_w = w - 1; inner_w <= w + 1; inner_w++) {
           // check for negative or above the total height/width to continue
-          if (inner_h < 0 || inner_h > height || inner_w < 0 || inner_w > width) {
+          if (inner_h < 0 || inner_h >= height || inner_w < 0 || inner_w >= width) {
             continue;
           }
-          red += image[inner_h][inner_w].rgbtRed;
-          blue += image[inner_h][inner_w].rgbtBlue;
-          green += image[inner_h][inner_w].rgbtGreen;
+          // accumulate totals
+          total_red += image[inner_h][inner_w].rgbtRed;
+          total_blue += image[inner_h][inner_w].rgbtBlue;
+          total_green += image[inner_h][inner_w].rgbtGreen;
+          // increment counter for average calc
+          total_nearby_pixels++;
         }
       }
+      // outside the inner 2D iteration loop get average from accumulated values
+      float average_red = (float)total_red / total_nearby_pixels;
+      float average_blue = (float)total_blue / total_nearby_pixels;
+      float average_green = (float)total_green / total_nearby_pixels;
+
+      // set the pixels RGB values to the new averages
+      PIXEL.rgbtRed = average_red;
+      PIXEL.rgbtBlue = average_blue;
+      PIXEL.rgbtGreen = average_green;
     }
   }
   return;
