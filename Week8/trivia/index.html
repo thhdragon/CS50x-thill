@@ -1,0 +1,57 @@
+<!doctype html>
+
+<html lang="en">
+
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet" />
+        <link href="styles.css" rel="stylesheet" />
+        <title>Trivia!</title>
+        <script>
+            // TODO: Add code to check answers to questions
+            // javascript event listener? click?
+            // if click class incorrect
+            // make event listener on the incorrect class for behavior
+            incorrect = document.querySelectorAll(".incorrect");
+            incorrect.addEventListener("click", () => {
+                // do something here
+                // turn button red
+                // show word incorrect below question
+            });
+
+
+            // if click class correct turn green
+            // turn button green
+            // show word incorrect below question
+        </script>
+    </head>
+
+    <body>
+        <div class="header">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2>Part 1: Multiple Choice</h2>
+                <hr />
+                <!-- TODO: Add multiple choice question here -->
+                <h3>A tabby cat has which letter shaped marking on their forehead?</h3>
+                <button class="incorrect">T</button>
+                <button class="correct">M</button>
+                <button class="incorrect">Y</button>
+                <button class="incorrect">W</button>
+                <button class="incorrect">V</button>
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr />
+                <!-- TODO: Add free response question here -->
+                <h3>Harlequin cats are predominantly what color?</h3>
+                <input type="text" name="free_response" id="free">
+                <button type="submit" id="submit" value="Submit">Check Answer</button>
+            </div>
+        </div>
+    </body>
+
+</html>

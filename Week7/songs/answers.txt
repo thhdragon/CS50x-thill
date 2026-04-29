@@ -1,0 +1,27 @@
+1) If songs.db contains the top 100 songs of one listener from 2018, how would you characterize their
+audio aura?
+average energy = 0.6590600000000001
+average valence = 0.48444299999999996
+average danceability = 0.71646
+
+Their audio aura seems to have averages of medium valence, with medium-high energy and danceability.
+Using the linked "Audio aura" blog post from the assignment post as a reference, 
+I would categorize the medium valence paired with higher energy as bold orange and emotional blue. It scores
+below the halfway point of the metric that measures mood and the energy/danceability levels are high
+and powerful enough to let the music communicate your feelings while not being a full-on dance mix. 
+
+2) Hypothesize about why the way you’ve calculated this aura might not be very representative of the
+listener.
+What better ways of calculating this aura would you propose?
+
+A better way of calculating this aura could be done if we had access to the play counts of each
+song. Instead of calculating a flat average it might yield a more accurate aura if the calculations
+were done using a weighted average formula and the play counts. One big problem I see with taking
+the average of your top 100 songs is that without knowing the listening frequency, song #99 could
+have 1000 plays on it and song #100 could have 50 but they would both have the same weight in a flat
+average calculation. For accuracy it would be important to differentiate whether or not the user actually
+let the song play and didn't immediately skip it while in shuffle or radio mode. Perhaps a metric
+such as the user listened to the song for at least N seconds before skipping. Also a lot could be
+learned from paying attention to what the user does immediately skip, if there is a correlation
+between the attributes of songs frequently skipped it could be used to give those types of songs
+lower weight in the aura algorithm. 
