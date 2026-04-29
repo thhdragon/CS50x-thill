@@ -93,7 +93,7 @@ int luhn(long cc) {
     long last = cc % 10;
     // if digit idx is even its part of phase 1
     if (idx % 2 == 0) {
-      // multiply digit by 2
+      // multiply last number by 2
       int last_doubled = last * 2;
       // now we need that numbers digits so nest the same logic
       while (last_doubled != 0) {
@@ -138,6 +138,7 @@ int main(void) {
   int type = card_type(cc, length);
   // get the checksum from the luhn function using cc number
   int checksum = luhn(cc);
+  printf("%d", checksum);
   // if checksum is valid print card type
   if (checksum % 10 == 0) {
     print_card(type);
